@@ -296,7 +296,32 @@ require('lazy').setup({
     config = function()
       require("nvim-tree").setup {}
     end,
-  }
+  },
+  {
+  "windwp/nvim-autopairs",
+  -- Optional dependency
+    dependencies = { 'hrsh7th/nvim-cmp' },
+    config = function()
+      require("nvim-autopairs").setup {}
+      -- If you want to automatically add `(` after selecting a function or method
+      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+      local cmp = require('cmp')
+      cmp.event:on(
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
+      )
+    end,
+  },
+  {
+    "Pocco81/auto-save.nvim",
+    config = function()
+       require("auto-save").setup {
+        -- your config goes here
+        -- or just leave it empty :)
+       }
+    end,
+  },
+  {'f-person/git-blame.nvim',  opts = {},},
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -357,6 +382,11 @@ require('copilot').setup({
   server_opts_overrides = {},
 })
 
+require('gitblame').setup {
+     --Note how the `gitblame_` prefix is omitted in `setup`
+    enabled = true,
+}
+
 -- nvim-tree options
 
 require("nvim-tree").setup({
@@ -374,6 +404,10 @@ require("nvim-tree").setup({
     dotfiles = true,
   },
 })
+
+
+-- global
+vim.api.nvim_set_keymap("n", "<leader>f", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
