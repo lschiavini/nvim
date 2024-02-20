@@ -46,7 +46,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.wo.number = true
 vim.wo.relativenumber = true
--- copilot make me a vim relativenumber 
+-- copilot make me a vim relativenumber
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
@@ -92,7 +92,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -137,11 +137,11 @@ require('lazy').setup({
   {
     "zbirenbaum/copilot-cmp",
     config = function()
-        require("copilot_cmp").setup()
+      require("copilot_cmp").setup()
     end,
   },
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -348,6 +348,7 @@ require('copilot').setup({
 
 
 
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -415,6 +416,12 @@ set('n', '<leader>P', '"_dP', { noremap = true })
 set('n', '<C-d>', '<C-d>zz', { noremap = true })
 set('n', '<C-u>', '<C-u>zz', { noremap = true })
 
+-- Navigate between windows
+set('n', '<c-k>', ':wincmd k<CR>', { silent = true })
+set('n', '<c-j>', ':wincmd j<CR>', { silent = true })
+set('n', '<c-h>', ':wincmd h<CR>', { silent = true })
+set('n', '<c-l>', ':wincmd l<CR>', { silent = true })
+
 
 
 -- Remap for dealing with word wrap
@@ -437,6 +444,36 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+--  callback = function(ev)
+--    -- Enable completion triggered by <c-x><c-o>
+--    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+--
+--    -- Buffer local mappings.
+--    -- See `:help vim.lsp.*` for documentation on any of the below functions
+--    local opts = { buffer = ev.buf }
+--    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+--    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+--    vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
+--    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+--    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+--    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+--    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+--    vim.keymap.set('n', '<space>wl', function()
+--      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+--    end, opts)
+--    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+--    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+--    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+--    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+--    vim.keymap.set('n', '<space>f', function()
+--      vim.lsp.buf.format { async = true }
+--    end, opts)
+--  end,
+--})
+
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -623,7 +660,7 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('<leader>K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  nmap('<leader>ck', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -675,8 +712,8 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  tsserver = {},
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
 
   lua_ls = {
     Lua = {
@@ -759,10 +796,10 @@ cmp.setup {
     end, { 'i', 's' }),
   },
   sources = {
-    { name = "copilot", group_index = 2 },
+    { name = "copilot",  group_index = 2 },
     { name = 'nvim_lsp', group_index = 2 },
-    { name = 'luasnip', group_index = 2 },
-    { name = 'path', group_index = 2 },
+    { name = 'luasnip',  group_index = 2 },
+    { name = 'path',     group_index = 2 },
   },
 }
 
