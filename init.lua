@@ -44,6 +44,9 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.nofsync = true
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.wo.number = true
+vim.wo.relativenumber = true
+
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
@@ -329,9 +332,31 @@ vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 
+local set = vim.keymap.set
+
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+-- Map 'jj' and 'jk' to Escape in insert mode
+set('i', 'jj', '<Esc>', { noremap = true, silent = true })
+set('i', 'jk', '<Esc>', { noremap = true, silent = true })
+
+-- Map 'J' to move down 5 lines and 'K' to move up 5 lines in normal mode
+set('n', 'J', '5j', { noremap = true })
+set('n', 'K', '5k', { noremap = true })
+
+-- Remap the default 'J' (join lines) to 'leader + J'
+set('n', '<leader>J', 'J', { noremap = true })
+
+-- Leader + P to paste without changing the delete register
+set('n', '<leader>P', '"_dP', { noremap = true })
+
+-- Enhance CTRL+D and CTRL+U with centering the cursor
+set('n', '<C-d>', '<C-d>zz', { noremap = true })
+set('n', '<C-u>', '<C-u>zz', { noremap = true })
+
+
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
