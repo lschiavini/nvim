@@ -46,7 +46,10 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.wo.number = true
 vim.wo.relativenumber = true
--- copilot make me a vim relativenumber
+vim.opt.termguicolors = true
+
+vim.g.netrw_list_hide = [[\(^\|\s\s\)\zs\.\S\+]]
+
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
@@ -322,6 +325,34 @@ require('lazy').setup({
     end,
   },
   {'f-person/git-blame.nvim',  opts = {},},
+  {
+   "yetone/avante.nvim",
+   event = "VeryLazy",
+   opts = {
+     -- add any opts here
+   },
+   dependencies = {
+     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+     "stevearc/dressing.nvim",
+     "nvim-lua/plenary.nvim",
+     "MunifTanjim/nui.nvim",
+     --- The below is optional, make sure to setup it properly if you have lazy=true
+     {
+       'MeanderingProgrammer/render-markdown.nvim',
+       opts = {
+         file_types = { "markdown", "Avante" },
+       },
+       ft = { "markdown", "Avante" },
+     },
+   },
+  },
+  {
+   "MeanderingProgrammer/render-markdown.nvim",
+   opts = {
+     file_types = { "markdown", "Avante" },
+   },
+   ft = { "markdown", "Avante" },
+  }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -338,49 +369,6 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
-require('copilot').setup({
-  panel = {
-    enabled = true,
-    auto_refresh = true,
-    keymap = {
-      jump_prev = "[[",
-      jump_next = "]]",
-      accept = "<CR>",
-      refresh = "gr",
-      open = "<M-CR>"
-    },
-    layout = {
-      position = "bottom", -- | top | left | right
-      ratio = 0.4
-    },
-  },
-  suggestion = {
-    enabled = true,
-    auto_trigger = true,
-    debounce = 75,
-    keymap = {
-      accept = "<M-l>",
-      accept_word = false,
-      accept_line = false,
-      next = "<M-]>",
-      prev = "<M-[>",
-      dismiss = "<C-]>",
-    },
-  },
-  filetypes = {
-    yaml = false,
-    markdown = false,
-    help = false,
-    gitcommit = false,
-    gitrebase = false,
-    hgcommit = false,
-    svn = false,
-    cvs = false,
-    ["."] = false,
-  },
-  copilot_node_command = 'node', -- Node.js version must be > 18.x
-  server_opts_overrides = {},
-})
 
 require('gitblame').setup {
      --Note how the `gitblame_` prefix is omitted in `setup`
@@ -401,7 +389,7 @@ require("nvim-tree").setup({
     group_empty = true,
   },
   filters = {
-    dotfiles = true,
+    dotfiles = false,
   },
 })
 
@@ -504,35 +492,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
-
--- vim.api.nvim_create_autocmd('LspAttach', {
---  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
---  callback = function(ev)
---    -- Enable completion triggered by <c-x><c-o>
---    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
---
---    -- Buffer local mappings.
---    -- See `:help vim.lsp.*` for documentation on any of the below functions
---    local opts = { buffer = ev.buf }
---    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
---    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
---    vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
---    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
---    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
---    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
---    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
---    vim.keymap.set('n', '<space>wl', function()
---      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
---    end, opts)
---    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
---    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
---    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
---    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
---    vim.keymap.set('n', '<space>f', function()
---      vim.lsp.buf.format { async = true }
---    end, opts)
---  end,
---})
 
 
 -- [[ Configure Telescope ]]
