@@ -219,7 +219,6 @@ require('lazy').setup({
       end,
     },
   },
-
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
@@ -821,6 +820,21 @@ cmp.setup {
     { name = 'path',     group_index = 2 },
   },
 }
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("lsp", { clear = true }),
+  callback = function(args)
+    -- 2
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      -- 3
+      buffer = args.buf,
+      callback = function()
+        -- 4 + 5
+        vim.lsp.buf.format {async = false, id = args.data.client_id }
+      end,
+    })
+  end
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
