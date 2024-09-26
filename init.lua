@@ -196,7 +196,7 @@ require('lazy').setup({
           gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
         end, { desc = 'reset git hunk' })
         -- normal mode
-        map('n', '<leader>hs', gs.stage_hunk, { desc = 'git stage hunk' })
+        map('n', '<leader>gsh', gs.stage_hunk, { desc = 'git stage hunk' })
         map('n', '<leader>hr', gs.reset_hunk, { desc = 'git reset hunk' })
         map('n', '<leader>hS', gs.stage_buffer, { desc = 'git Stage buffer' })
         map('n', '<leader>hu', gs.undo_stage_hunk, { desc = 'undo stage hunk' })
@@ -205,7 +205,7 @@ require('lazy').setup({
         map('n', '<leader>hb', function()
           gs.blame_line { full = false }
         end, { desc = 'git blame line' })
-        map('n', '<leader>hd', gs.diffthis, { desc = 'git diff against index' })
+        map('n', '<leader>ghd', gs.diffthis, { desc = 'git diff against index' })
         map('n', '<leader>hD', function()
           gs.diffthis '~'
         end, { desc = 'git diff against last commit' })
@@ -230,6 +230,8 @@ require('lazy').setup({
         style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
       }
       require('onedark').load()
+      vim.cmd.colorscheme('onedark')
+      vim.opt.background = 'dark'
     end,
   },
 
@@ -300,8 +302,8 @@ require('lazy').setup({
     end,
   },
   {
-  "windwp/nvim-autopairs",
-  -- Optional dependency
+    "windwp/nvim-autopairs",
+    -- Optional dependency
     dependencies = { 'hrsh7th/nvim-cmp' },
     config = function()
       require("nvim-autopairs").setup {}
@@ -317,40 +319,48 @@ require('lazy').setup({
   {
     "Pocco81/auto-save.nvim",
     config = function()
-       require("auto-save").setup {
+      require("auto-save").setup {
         -- your config goes here
         -- or just leave it empty :)
-       }
+      }
     end,
   },
-  {'f-person/git-blame.nvim',  opts = {},},
+  { 'f-person/git-blame.nvim', opts = {}, },
   {
-   "yetone/avante.nvim",
-   event = "VeryLazy",
-   opts = {
-     -- add any opts here
-   },
-   dependencies = {
-     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-     "stevearc/dressing.nvim",
-     "nvim-lua/plenary.nvim",
-     "MunifTanjim/nui.nvim",
-     --- The below is optional, make sure to setup it properly if you have lazy=true
-     {
-       'MeanderingProgrammer/render-markdown.nvim',
-       opts = {
-         file_types = { "markdown", "Avante" },
-       },
-       ft = { "markdown", "Avante" },
-     },
-   },
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any opts here
+    },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below is optional, make sure to setup it properly if you have lazy=true
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
   },
   {
-   "MeanderingProgrammer/render-markdown.nvim",
-   opts = {
-     file_types = { "markdown", "Avante" },
-   },
-   ft = { "markdown", "Avante" },
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {
+      file_types = { "markdown", "Avante" },
+    },
+    ft = { "markdown", "Avante" },
+  },
+  {
+    "ThePrimeagen/harpoon",
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = true,
   }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -370,8 +380,8 @@ require('lazy').setup({
 
 
 require('gitblame').setup {
-     --Note how the `gitblame_` prefix is omitted in `setup`
-    enabled = true,
+  --Note how the `gitblame_` prefix is omitted in `setup`
+  enabled = true,
 }
 
 -- nvim-tree options
@@ -394,7 +404,7 @@ require("nvim-tree").setup({
 
 
 -- global
-vim.api.nvim_set_keymap("n", "<leader>f", ":NvimTreeToggle<cr>", {silent = true, noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>f", ":NvimTreeToggle<cr>", { silent = true, noremap = true })
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -469,6 +479,16 @@ set('n', '<c-j>', ':wincmd j<CR>', { silent = true })
 set('n', '<c-h>', ':wincmd h<CR>', { silent = true })
 set('n', '<c-l>', ':wincmd l<CR>', { silent = true })
 
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+set("n", "<leader>af", mark.add_file)
+set("n", "<C-e>", ui.toggle_quick_menu)
+
+set("n", "<leader>ha", function() ui.nav_file(1) end)
+set("n", "<leader>hs", function() ui.nav_file(2) end)
+set("n", "<leader>hd", function() ui.nav_file(3) end)
+set("n", "<leader>hf", function() ui.nav_file(4) end)
 
 
 -- Remap for dealing with word wrap
@@ -830,11 +850,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
       buffer = args.buf,
       callback = function()
         -- 4 + 5
-        vim.lsp.buf.format {async = false, id = args.data.client_id }
+        vim.lsp.buf.format { async = false, id = args.data.client_id }
       end,
     })
   end
 })
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
