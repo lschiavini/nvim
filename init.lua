@@ -14,7 +14,6 @@ require("config.options")
 
 -- Lazy Plugins
 require("config.lazy")
-require("lazy").setup("plugins")
 
 -- Keymaps
 require("config.keymaps")

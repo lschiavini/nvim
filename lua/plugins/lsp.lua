@@ -18,7 +18,29 @@ return {
 					-- mason-lspconfig requires that these setup functions are called in this order
 					-- before setting up the servers.
 					require('mason').setup()
-					require('mason-lspconfig').setup()
+
+					-- Define servers BEFORE using them
+					local servers = {
+						-- clangd = {},
+						-- gopls = {},
+						-- pyright = {},
+						-- rust_analyzer = {},
+						-- tsserver = {},
+						html = { filetypes = { 'html', 'twig', 'hbs' } },
+
+						lua_ls = {
+							Lua = {
+								workspace = { checkThirdParty = false },
+								telemetry = { enable = false },
+								-- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+								-- diagnostics = { disable = { 'missing-fields' } },
+							},
+						},
+					}
+
+					-- Setup neovim lua configuration FIRST
+					require('neodev').setup()
+
 					-- [[ Configure LSP ]]
 					--  This function gets run when an LSP connects to a particular buffer.
 					local on_attach = function(_, bufnr)
@@ -74,23 +96,6 @@ return {
 							vim.lsp.buf.format()
 						end, { desc = 'Format current buffer with LSP' })
 					end
-					local servers = {
-						-- clangd = {},
-						-- gopls = {},
-						-- pyright = {},
-						-- rust_analyzer = {},
-						-- tsserver = {},
-						html = { filetypes = { 'html', 'twig', 'hbs' } },
-
-						lua_ls = {
-							Lua = {
-								workspace = { checkThirdParty = false },
-								telemetry = { enable = false },
-								-- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-								-- diagnostics = { disable = { 'missing-fields' } },
-							},
-						},
-					}
 
 					-- Setup neovim lua configuration
 					require('neodev').setup()
@@ -98,23 +103,15 @@ return {
 					local capabilities = vim.lsp.protocol.make_client_capabilities()
 					capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-					-- Ensure the servers above are installed
-					local mason_lspconfig = require 'mason-lspconfig'
-
-					mason_lspconfig.setup {
-						ensure_installed = vim.tbl_keys(servers),
-					}
-
-					mason_lspconfig.setup_handlers {
-						function(server_name)
-							require('lspconfig')[server_name].setup {
-								capabilities = capabilities,
-								on_attach = on_attach,
-								settings = servers[server_name],
-								filetypes = (servers[server_name] or {}).filetypes,
-							}
-						end,
-					}
+					-- Manual server setup (avoiding the second mason_lspconfig.setup call)
+					for server_name, server_config in pairs(servers) do
+						require('lspconfig')[server_name].setup {
+							capabilities = capabilities,
+							on_attach = on_attach,
+							settings = server_config,
+							filetypes = server_config.filetypes,
+						}
+					end
 
 					-- [[ Configure nvim-cmp ]]
 					-- See `:help cmp`
