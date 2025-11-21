@@ -37,6 +37,17 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
 
+-- folds
+-- vim.opt.foldmethod = "indent" -- fold by indentation
+-- vim.opt.foldmethod = "syntax" -- fold by syntax (language-aware)
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+
+-- treesitter fold
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 vim.o.showtabline = 2

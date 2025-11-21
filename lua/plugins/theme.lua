@@ -1,20 +1,21 @@
 return {
   {
-    "navarasu/onedark.nvim",
+    "catppuccin/nvim",
+    name = "catppuccin",
     priority = 1000,
     lazy = false,
     config = function()
-      require("onedark").setup({
-        style = "dark",
-        transparent = true, -- Enable transparent background
-        term_colors = true, -- Use terminal colors for consistency
+      require("catppuccin").setup({
+        flavour = "mocha", -- latte = light theme
+        transparent_background = false,
+        show_end_of_buffer = false,
+        term_colors = true,
+        styles = {
+          comments = { "italic" },
+          conditionals = { "italic" },
+        },
       })
-      require("onedark").load()
-      vim.cmd.colorscheme("onedark")
-      vim.opt.background = "dark"
-      -- Ensure Normal and NormalFloat backgrounds are transparent
-      vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+      vim.cmd.colorscheme("catppuccin")
     end,
   },
 }
