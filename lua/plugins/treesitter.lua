@@ -25,6 +25,7 @@ return {
             "vimdoc",
             "vim",
             "bash",
+            "nim",
             "markdown",
           },
           fold = { enable = true },

@@ -25,6 +25,7 @@ return {
             -- rust_analyzer = {},
             -- tsserver = {},
             html = { filetypes = { "html", "twig", "hbs" } },
+            nimls = {},
 
             lua_ls = {
               Lua = {
