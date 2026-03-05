@@ -21,11 +21,12 @@ return {
           local servers = {
             -- clangd = {},
             -- gopls = {},
-            -- pyright = {},
+            pyright = {},
             -- rust_analyzer = {},
-            -- tsserver = {},
+            ts_ls = {},
             html = { filetypes = { "html", "twig", "hbs" } },
             nimls = {},
+            biome = {},
 
             lua_ls = {
               Lua = {

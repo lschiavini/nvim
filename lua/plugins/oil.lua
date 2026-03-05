@@ -7,6 +7,12 @@ return {
       view_options = {
         show_hidden = true,
       },
+      preview_win = {
+        preview_method = "load",
+      },
+      keymaps = {
+        ["<C-p>"] = "actions.preview",
+      },
     },
     -- Optional dependencies
     dependencies = { { "echasnovski/mini.icons", opts = {} } },

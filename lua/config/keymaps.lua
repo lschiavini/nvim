@@ -35,3 +35,8 @@ set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnos
 set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 set("n", "<leader>o", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+-- Open current file in external viewer (useful for images)
+set("n", "<leader>iv", function()
+  vim.fn.system("open " .. vim.fn.shellescape(vim.fn.expand("%:p")))
+end, { desc = "Open file in external viewer" })
